@@ -1,4 +1,4 @@
-package api
+package main
 
 import (
 	"net/http"
@@ -19,7 +19,7 @@ func (m myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("my-handler"))
 }
 
-func main() {
+func main2() {
 	r := chi.NewRouter()
 
 	// r.Use(myMiddleware)
