@@ -2,6 +2,7 @@ package campaign
 
 import (
 	"go-email/internal/dto"
+	internalerrors "go-email/internal/internal-errors"
 )
 
 type CampaignService struct {
@@ -15,7 +16,7 @@ func (cs *CampaignService) Create(input dto.NewCampaignInput) (string, error) {
 	}
 	err = cs.CampaignRepository.Save(campaign)
 	if err != nil {
-		return "", err
+		return "", internalerrors.ErrInternal
 	}
 	return campaign.ID, nil
 }
