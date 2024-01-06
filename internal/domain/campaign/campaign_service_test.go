@@ -19,6 +19,10 @@ func (r *campaignRepositoryMock) Save(campaign *Campaign) error {
 	return args.Error(0)
 }
 
+func (r *campaignRepositoryMock) Get() []Campaign {
+	return nil
+}
+
 var (
 	input = dto.NewCampaignInput{
 		Name:    "Teste Y",

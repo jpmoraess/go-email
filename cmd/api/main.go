@@ -2,12 +2,12 @@ package main
 
 import (
 	"go-email/internal/domain/campaign"
-	"go-email/internal/dto"
+	"go-email/internal/endpoints"
+	"go-email/internal/infra/database"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/render"
 )
 
 func main() {
@@ -18,20 +18,15 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	campaignService := campaign.CampaignService{}
+	campaignService := campaign.CampaignService{
+		CampaignRepository: &database.CampaignRepositoryAdapter{},
+	}
+	handler := endpoints.Handler{
+		CampaignService: campaignService,
+	}
 
-	r.Post("/campaigns", func(w http.ResponseWriter, r *http.Request) {
-		var input dto.NewCampaignInput
-		render.DecodeJSON(r.Body, &input)
-		id, err := campaignService.Create(input)
-		if err != nil {
-			render.Status(r, 400)
-			render.JSON(w, r, map[string]string{"error": err.Error()})
-			return
-		}
-		render.Status(r, 201)
-		render.JSON(w, r, map[string]string{"id": id})
-	})
+	r.Post("/campaigns", handler.CampaignPost)
+	r.Get("/campaigns", handler.CampaignGet)
 
 	http.ListenAndServe(":8080", r)
 }

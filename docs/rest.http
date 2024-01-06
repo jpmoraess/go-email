@@ -1,7 +1,11 @@
 POST http://localhost:8080/campaigns
 
 {
-    "name": "Pubicidade",
+    "name": "Pubicidade 3",
     "content": "Publicidade desses problemas",
     "emails": ["teste@mail.com.br"]
 }
+
+###
+
+GET http://localhost:8080/campaigns
